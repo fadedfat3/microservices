@@ -1,0 +1,52 @@
+server:
+  port: ${GATEWAY_PORT:8000}
+
+spring:
+  application:
+    name: microservices-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST:192.168.70.200}:8848
+    sentinel:
+      transport:
+        dashboard: 192.168.70.200:8180
+        port: 8719
+    gateway:
+      loadbalancer:
+        use404: true
+      enabled: true
+      routes:
+        - id: uaa
+          uri: lb://uaa
+          predicates:
+            - Path=/uaa/**
+          filters:
+            - StripPrefix=1
+        - id: user-admin
+          uri: lb://user-admin
+          predicates:
+            - Path=/user-admin/**
+          filters:
+            - StripPrefix=1
+        - id: client
+          uri: lb://oauth-client
+          predicates:
+            - Path=/client/**
+          filters:
+            - StripPrefix=1
+
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:${server.port}/uaa/user-info
+      id: rid
+    client:
+      access-token-uri: http://localhost:${server.port}/uaa/oauth/token
+      client-id: password
+      client-secret: wangu123!@#
+      grant-type: password
+      scope: all
+feign:
+  sentinel:
+    enabled: true

@@ -1,0 +1,35 @@
+server:
+  port: 8200
+spring:
+  application:
+    name: user-admin
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.70.200:8848
+    sentinel:
+      transport:
+        dashboard: 192.168.70.200:8180
+        port: 8719
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:192.168.70.159}:${DATASOURCE_PORT:3306}/rbac-security?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=GMT
+    username: ${DATASOURCE_USERNAME:root}
+    password: ${DATASOURCE_PASSWORD:Wangu123!@#}
+  redis:
+    host: 192.168.70.200
+    port: 6379
+    password: 123456
+feign:
+  sentinel:
+    enabled: true
+security:
+  oauth2:
+    resource:
+      id: rid
+      user-info-uri: http://localhost:8000/uaa/user-info
+
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.microservices.admin.entity
