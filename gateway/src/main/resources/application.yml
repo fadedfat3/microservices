@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: microservices-gateway
+    name: gateway
   cloud:
     nacos:
       discovery:
