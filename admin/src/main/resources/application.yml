@@ -23,11 +23,11 @@ spring:
 feign:
   sentinel:
     enabled: true
-security:
-  oauth2:
-    resource:
-      id: rid
-      user-info-uri: http://192.168.70.200:8000/uaa/user-info
+#security:
+#  oauth2:
+#    resource:
+#      id: rid
+#      user-info-uri: http://192.168.70.200:8000/uaa/user-info
 
 
 mybatis-plus:

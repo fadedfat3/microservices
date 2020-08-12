@@ -25,3 +25,8 @@ spring:
 feign:
   sentinel:
     enabled: true
+
+logging:
+  level:
+    root: info
+    com.example.microservices.oauth: info

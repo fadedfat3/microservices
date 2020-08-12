@@ -4,6 +4,16 @@ server:
 spring:
   application:
     name: gateway
+  security:
+    ignore:
+      urls:
+        - "/uaa/oauth/**"
+        - "/actuator/**"
+        - "/uaa/rsa/publicKey"
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: 'http://localhost:${server.port}/uaa/rsa/publicKey' #配置RSA的公钥访问地址
   cloud:
     nacos:
       discovery:
@@ -36,17 +46,24 @@ spring:
           filters:
             - StripPrefix=1
 
-security:
-  oauth2:
-    resource:
-      user-info-uri: http://localhost:${server.port}/uaa/user-info
-      id: rid
-    client:
-      access-token-uri: http://localhost:${server.port}/uaa/oauth/token
-      client-id: password
-      client-secret: wangu123!@#
-      grant-type: password
-      scope: all
+#security:
+#  oauth2:
+#    resource:
+#      user-info-uri: http://localhost:${server.port}/uaa/user-info
+#      id: rid
+#    client:
+#      access-token-uri: http://localhost:${server.port}/uaa/oauth/token
+#      client-id: password
+#      client-secret: wangu123!@#
+#      grant-type: password
+#      scope: all
 feign:
   sentinel:
     enabled: true
+
+
+
+logging:
+  level:
+    root: info
+    com.example.microservices.gateway: info

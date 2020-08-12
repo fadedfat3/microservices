@@ -23,15 +23,17 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.debug("username={}", username);
+        //log.debug("username={}", username);
         R result = userAdminService.auth(username);
+        // log.info("result = {}", result);
         if (!result.ok()) {
             log.info("登录用户：" + username + " 不存在.");
             throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
         }
         Map<String, Object> data = (Map<String, Object>) result.getData();
+        String id = (String) data.get("id");
         String password = (String) data.get("password");
         Collection<String> authorities = (Collection<String>) data.get("authorities");
-        return new UserInfo(username, password, AuthorityUtils.createAuthorityList(authorities.toArray(new String[0])));
+        return new UserInfo(id, username, password, AuthorityUtils.createAuthorityList(authorities.toArray(new String[0])));
     }
 }

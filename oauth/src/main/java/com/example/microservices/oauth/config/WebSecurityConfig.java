@@ -18,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    // @Autowired
+    // private RestAuthExceptionHandler restAuthExceptionHandler;
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -47,9 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/oauth/**").authorizeRequests()
-                .antMatchers("/oauth/**").permitAll()
+        http.authorizeRequests()
+                .antMatchers("/oauth/**", "/rsa/publicKey").permitAll()
                 .and().csrf().disable();
+        //   .exceptionHandling()
+        //   .authenticationEntryPoint(restAuthExceptionHandler)
+        //   .accessDeniedHandler(restAuthExceptionHandler);
     }
 
 

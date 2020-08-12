@@ -2,7 +2,9 @@ package com.example.microservices.oauth.config;
 
 import com.example.microservices.oauth.service.impl.CustomUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -10,9 +12,16 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 
 import javax.sql.DataSource;
+import java.security.KeyPair;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableAuthorizationServer
@@ -21,9 +30,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     AuthenticationManager authenticationManager;
 
-    // 该对象用来将令牌信息存储到内存中
-//    @Autowired
-//    CustomInMemoryTokenStore inMemoryTokenStore;
+    @Autowired
+    JwtTokenEnhancer jwtTokenEnhancer;
 
     // 该对象将为刷新token提供支持
     @Autowired
@@ -40,6 +48,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     //@Qualifier("redis")
     @Autowired
     TokenStore redisTokenStore;
+
+
+    //@Autowired
+    //RestAuthExceptionHandler restAuthExceptionHandler;
+
+
 
     // 指定密码的加密方式
 //    @Bean
@@ -69,9 +83,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.tokenStore(redisTokenStore) //配置令牌的存储（这里存放在内存中）
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        List<TokenEnhancer> tokenEnhancerList = new ArrayList<TokenEnhancer>();
+        tokenEnhancerList.add(jwtTokenEnhancer);
+        tokenEnhancerList.add(accessTokenConverter());
+        tokenEnhancerChain.setTokenEnhancers(tokenEnhancerList);
+        endpoints.accessTokenConverter(accessTokenConverter())
+                .tokenEnhancer(tokenEnhancerChain)
+                //.tokenStore(redisTokenStore) //配置令牌的存储（这里存放在内存中）
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService);
+        // .exceptionTranslator(translator);
     }
 
     @Override
@@ -79,6 +101,23 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         // 表示支持 client_id 和 client_secret 做登录认证
         security.allowFormAuthenticationForClients();
         security.checkTokenAccess("isAuthenticated()");
-        security.tokenKeyAccess("isAuthenticated()");
+        security.tokenKeyAccess("permitAll()");
+        // security.accessDeniedHandler(restAuthExceptionHandler);
+        // security.authenticationEntryPoint(restAuthExceptionHandler);
+        // security.
+    }
+
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setKeyPair(keyPair());
+        return jwtAccessTokenConverter;
+    }
+
+    @Bean
+    public KeyPair keyPair() {
+        //从classpath下的证书中获取秘钥对
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "123456".toCharArray());
+        return keyStoreKeyFactory.getKeyPair("jwt", "123456".toCharArray());
     }
 }

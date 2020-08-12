@@ -9,10 +9,14 @@ import com.example.microservices.admin.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -62,7 +66,16 @@ public class AuthController extends ApiController {
         result.put("username", user.getUsername());
         result.put("password", user.getPassword());
         result.put("authorities", authorities);
+        result.put("id", user.getId());
         return R.ok(result);
+    }
+
+    @GetMapping("currentUser")
+    public R currentUser() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        String uid = request.getHeader("uid");
+        return R.ok(userService.getById(uid));
     }
 
 
