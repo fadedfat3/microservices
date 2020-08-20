@@ -3,6 +3,7 @@ package com.example.microservices.admin.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.example.microservices.admin.dto.SysUserDTO;
 import com.example.microservices.admin.entity.SysPermission;
 import com.example.microservices.admin.entity.SysUser;
 import com.example.microservices.admin.service.SysUserService;
@@ -17,7 +18,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Slf4j
@@ -43,9 +43,8 @@ public class AuthController extends ApiController {
      * @return
      */
 
-    @RequestMapping("/logoutSuccess")
-    public R logout(HttpSession session) {
-        session.invalidate();
+    @PostMapping("/logout")
+    public R logout() {
         return R.ok("退出成功");
     }
 
@@ -75,7 +74,8 @@ public class AuthController extends ApiController {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         String uid = request.getHeader("uid");
-        return R.ok(userService.getById(uid));
+        SysUserDTO userDTO = userService.getUserDTOById(uid);
+        return R.ok(userDTO);
     }
 
 

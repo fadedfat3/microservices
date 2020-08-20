@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/oauth/**", "/rsa/publicKey").permitAll()
-                .and().csrf().disable();
+                .and().csrf().disable().cors().disable();
         //   .exceptionHandling()
         //   .authenticationEntryPoint(restAuthExceptionHandler)
         //   .accessDeniedHandler(restAuthExceptionHandler);

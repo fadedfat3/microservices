@@ -1,6 +1,7 @@
 package com.example.microservices.admin.entity;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
  * @since 2020-08-05 16:14:06
  */
 @SuppressWarnings("serial")
+@AllArgsConstructor
 public class SysMenu extends Model<SysMenu> {
     //菜单ID
     private Integer menuId;
@@ -154,4 +156,26 @@ public class SysMenu extends Model<SysMenu> {
     protected Serializable pkVal() {
         return this.menuId;
     }
+
+    public SysMenu(SysMenu menu) {
+        this.menuId = menu.getMenuId();
+        this.component = menu.getComponent();
+        this.name = menu.getName();
+        this.createTime = menu.getCreateTime();
+        this.delFlag = menu.getDelFlag();
+        this.icon = menu.getIcon();
+        this.isFrame = menu.getIsFrame();
+        this.parentId = menu.getParentId();
+        this.path = menu.getPath();
+        this.perms = menu.getPerms();
+        this.sort = menu.getSort();
+        this.type = menu.getType();
+        this.updateTime = menu.getUpdateTime();
+    }
+
+    public SysMenu() {
+
+    }
+
+
 }

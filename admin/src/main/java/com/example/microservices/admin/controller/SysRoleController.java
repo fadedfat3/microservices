@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * 系统角色表(SysRole)表控制层
@@ -80,7 +80,7 @@ public class SysRoleController extends ApiController {
      * @return 删除结果
      */
     @DeleteMapping
-    public R delete(@RequestParam("idList") List<Long> idList) {
-        return success(this.sysRoleService.removeByIds(idList));
+    public R delete(@RequestParam("idList") String[] idList) {
+        return success(this.sysRoleService.removeByIds(Arrays.asList(idList)));
     }
 }

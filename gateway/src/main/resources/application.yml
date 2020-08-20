@@ -17,10 +17,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${NACOS_HOST:192.168.70.200}:8848
+        server-addr: ${NACOS_HOST:134.175.47.234}:8848
     sentinel:
       transport:
-        dashboard: 192.168.70.200:8180
+        dashboard: 134.175.47.234:8180
         port: 8719
     gateway:
       loadbalancer:
@@ -45,6 +45,12 @@ spring:
             - Path=/client/**
           filters:
             - StripPrefix=1
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
 
 #security:
 #  oauth2:

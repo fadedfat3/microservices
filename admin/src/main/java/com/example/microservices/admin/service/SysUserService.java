@@ -1,8 +1,14 @@
 package com.example.microservices.admin.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.microservices.admin.dto.SysUserDTO;
+import com.example.microservices.admin.entity.SysMenu;
 import com.example.microservices.admin.entity.SysPermission;
 import com.example.microservices.admin.entity.SysUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,4 +21,10 @@ import java.util.List;
 public interface SysUserService extends IService<SysUser> {
 
     List<SysPermission> findPermissionListByUser(SysUser user);
+
+    List<SysMenu> findMenuListByUser(SysUser user);
+
+    IPage<SysUserDTO> listUserDTO(IPage<SysUser> page, @Param(Constants.WRAPPER) Wrapper<SysUser> queryWrapper);
+
+    SysUserDTO getUserDTOById(String uid);
 }

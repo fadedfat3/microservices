@@ -14,7 +14,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 
@@ -44,10 +43,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     //@Qualifier("dataSource")
     @Autowired
     DataSource dataSource;
-
-    //@Qualifier("redis")
-    @Autowired
-    TokenStore redisTokenStore;
 
 
     //@Autowired

@@ -3,6 +3,7 @@ package com.example.microservices.gateway.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -35,9 +36,12 @@ public class WebFluxSecurityConfig {
         //   http.addFilterBefore(ignoreUrlsRemoveJwtFilter, SecurityWebFiltersOrder.AUTHENTICATION);
         http.authorizeExchange()
                 .pathMatchers(ignoreUrlsConfig.getUrls().toArray(new String[0])).permitAll()//白名单配置
+                .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 // .anyExchange().access(authorizationManager)//鉴权管理器配置
                 .anyExchange().authenticated()
-                .and().csrf().disable();
+                .and().csrf().disable()
+                .httpBasic().disable().formLogin().disable()
+                .headers().frameOptions().disable();
         return http.build();
     }
 

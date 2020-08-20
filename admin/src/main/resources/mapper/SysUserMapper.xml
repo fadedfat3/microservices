@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org//dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.microservices.admin.dao.SysUserDao">
+    <resultMap id="UserDTOMap" type="com.example.microservices.admin.dto.SysUserDTO">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="avatar" property="avatar"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+        <result column="status" property="status"/>
+        <result column="sex" property="sex"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <association property="dept" javaType="com.example.microservices.admin.entity.SysDept">
+            <id column="sys_dept_id" property="deptId"/>
+            <result column="name" property="name"/>
+            <result column="sort" property="sort"/>
+            <result column="parent_id" property="parentId"/>
+        </association>
+        <collection property="roles" ofType="com.example.microservices.admin.entity.SysRole">
+            <id column="sys_role_id" property="id"/>
+            <result column="role_name" property="roleName"/>
+            <result column="role_code" property="roleCode"/>
+            <result column="role_desc" property="roleDesc"/>
+        </collection>
+    </resultMap>
     <select id="findPermissionListByUser" parameterType="SysUser" resultType="SysPermission">
         select sys_permission.*
         from sys_permission
@@ -9,5 +35,36 @@
         inner join sys_user_role on sys_user_role.role_id = sys_role.id
         inner join sys_user on sys_user.id = sys_user_role.user_id
         where sys_user.username = #{username}
+    </select>
+    <select id="findMenuListByUser" parameterType="SysUser" resultType="SysMenu">
+        select distinct sys_menu.*
+        from sys_menu
+        inner join sys_role_menu on sys_menu.menu_id = sys_role_menu.menu_id
+        inner join sys_role on sys_role.id = sys_role_menu.role_id
+        inner join sys_user_role on sys_user_role.role_id = sys_role.id
+        inner join sys_user on sys_user.id = sys_user_role.user_id
+        where sys_user.username = #{username} and sys_menu.type = '2'
+    </select>
+    <select id="listUserDTO" resultMap="UserDTOMap">
+        select sys_user.id, username, password, sys_user.dept_id, email, phone, avatar, sys_user.created_time,
+        sys_user.updated_time, status, sex, last_login_time,
+        sys_dept.dept_id as sys_dept_id, name, sort, sys_dept.create_time, sys_dept.update_time,
+        sys_role.id as sys_role_id, role_name, role_code, role_desc
+        from sys_user
+        left join sys_dept on sys_user.dept_id = sys_dept.dept_id
+        left join sys_user_role on sys_user_role.user_id = sys_user.id
+        left join sys_role on sys_user_role.role_id = sys_role.id
+        ${ew.customSqlSegment}
+    </select>
+    <select id="getUserDTOById" resultMap="UserDTOMap">
+        select sys_user.id, username, password, sys_user.dept_id, email, phone, avatar, sys_user.created_time,
+        sys_user.updated_time, status, sex, last_login_time,
+        sys_dept.dept_id as sys_dept_id, name, sort, parent_id,
+        sys_role.id as sys_role_id, role_name, role_code, role_desc
+        from sys_user
+        left join sys_dept on sys_user.dept_id = sys_dept.dept_id
+        left join sys_user_role on sys_user_role.user_id = #{id}
+        left join sys_role on sys_user_role.role_id = sys_role.id
+        where sys_user.id = #{id}
     </select>
 </mapper>

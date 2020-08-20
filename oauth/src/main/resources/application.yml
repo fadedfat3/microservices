@@ -6,20 +6,20 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.70.200:8848
+        server-addr: 134.175.47.234:8848
     sentinel:
       transport:
-        dashboard: 192.168.70.200:8180
+        dashboard: 134.175.47.234:8180
         port: 8719
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:192.168.70.159}:${DATASOURCE_PORT:3306}/rbac-security?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=GMT
+    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:134.175.47.234}:${DATASOURCE_PORT:3306}/rbac-security?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=GMT
     username: ${DATASOURCE_USERNAME:root}
     password: ${DATASOURCE_PASSWORD:Wangu123!@#}
-  redis:
-    host: 192.168.70.200
-    port: 6379
-    password: 123456
+#  redis:
+#    host: 192.168.70.200
+#    port: 6379
+#    password: 123456
 
 
 feign:

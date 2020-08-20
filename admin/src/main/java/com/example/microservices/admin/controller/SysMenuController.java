@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.microservices.admin.entity.SysMenu;
 import com.example.microservices.admin.service.SysMenuService;
+import com.example.microservices.admin.service.SysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,6 +29,11 @@ public class SysMenuController extends ApiController {
      */
     @Resource
     private SysMenuService sysMenuService;
+
+    @Autowired
+    private SysUserService sysUserService;
+
+
 
     /**
      * 分页查询所有数据

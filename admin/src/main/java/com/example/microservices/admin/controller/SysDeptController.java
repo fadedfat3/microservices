@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.microservices.admin.dto.SysDeptDTO;
 import com.example.microservices.admin.entity.SysDept;
 import com.example.microservices.admin.service.SysDeptService;
 import org.springframework.web.bind.annotation.*;
@@ -82,5 +83,25 @@ public class SysDeptController extends ApiController {
     @DeleteMapping
     public R delete(@RequestParam("idList") List<Long> idList) {
         return success(this.sysDeptService.removeByIds(idList));
+    }
+
+    @GetMapping("/tree")
+    public R tree() {
+        List<SysDept> depts = sysDeptService.list();
+        SysDeptDTO sysDeptDTO = new SysDeptDTO();
+        sysDeptDTO.setDeptId(0);
+        treefy(sysDeptDTO, depts);
+        return success(sysDeptDTO.getChildren());
+    }
+
+    private void treefy(SysDeptDTO sysDeptDTO, List<SysDept> sysDeptList) {
+        sysDeptList.stream().forEach((dept -> {
+            if (dept.getParentId().equals(sysDeptDTO.getDeptId())) {
+                SysDeptDTO child = new SysDeptDTO(dept);
+                sysDeptDTO.getChildren().add(child);
+                treefy(child, sysDeptList);
+            }
+        }));
+        sysDeptDTO.getChildren().sort((o1, o2) -> o1.getSort().compareTo(o2.getSort()));
     }
 }
