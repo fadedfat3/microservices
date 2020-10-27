@@ -6,10 +6,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 134.175.47.234:8848
+        server-addr: 182.92.5.78:8848
     sentinel:
       transport:
-        dashboard: 134.175.47.234:8180
+        dashboard: 182.92.5.78:8180
         port: 8719
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -44,7 +44,7 @@ mybatis-plus:
       id-type: auto
 
 generator:
-  filepath: /Users/fadedfat3/Codes/microservices/generator
+  filepath: /root/data/microservices/generator
 
 logging:
   level:

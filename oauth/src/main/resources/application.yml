@@ -6,14 +6,14 @@ spring:
   cloud:
     inetutils:
       ignored-interfaces: eth.*
-      preferred-networks: 134.175.47
+      preferred-networks: 182.92.5
     nacos:
       discovery:
-        server-addr: 134.175.47.234:8848
-        ip: 134.175.47.234
+        server-addr: 182.92.5.78:8848
+        ip: 182.92.5.78
     sentinel:
       transport:
-        dashboard: 134.175.47.234:8180
+        dashboard: 182.92.5.78:8180
         port: 8719
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
