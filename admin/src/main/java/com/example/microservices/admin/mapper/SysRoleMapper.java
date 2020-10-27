@@ -1,4 +1,4 @@
-package com.example.microservices.admin.dao;
+package com.example.microservices.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.microservices.admin.entity.SysRole;
@@ -9,6 +9,6 @@ import com.example.microservices.admin.entity.SysRole;
  * @author makejava
  * @since 2020-08-05 16:10:19
  */
-public interface SysRoleDao extends BaseMapper<SysRole> {
+public interface SysRoleMapper extends BaseMapper<SysRole> {
 
 }

@@ -1,6 +1,5 @@
 package com.example.microservices.admin.dto;
 
-import com.example.microservices.admin.entity.SysDept;
 import com.example.microservices.admin.entity.SysRole;
 import com.example.microservices.admin.entity.SysUser;
 import lombok.AllArgsConstructor;
@@ -42,5 +41,5 @@ public class SysUserDTO extends SysUser {
 //    //上次登陆时间
 //    private LocalDateTime lastLoginTime;
     private List<SysRole> roles;
-    private SysDept dept;
+    // private SysDept dept;
 }

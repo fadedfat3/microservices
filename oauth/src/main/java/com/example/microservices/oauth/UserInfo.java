@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 public class UserInfo implements UserDetails {
-    private String id;
+    private Integer id;
     private String username;
     private String password;
     private boolean isAccountNonExpired = true;
@@ -15,7 +15,7 @@ public class UserInfo implements UserDetails {
     private boolean isEnabled = true;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserInfo(String id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserInfo(Integer id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -23,7 +23,7 @@ public class UserInfo implements UserDetails {
 
     }
 
-    public String getId() {
+    public Integer getId() {
         return this.id;
     }
 

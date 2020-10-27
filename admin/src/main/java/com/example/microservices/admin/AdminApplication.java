@@ -13,7 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 //@EnableResourceServer
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
-@MapperScan("com.example.microservices.admin.dao")
+@MapperScan("com.example.microservices.admin.mapper")
 public class AdminApplication {
 
     public static void main(String[] args) {

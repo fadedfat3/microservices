@@ -24,19 +24,14 @@ public class SysUserRole extends Model<SysUserRole> {
     @TableId(type = IdType.AUTO)
     private Integer id;
     //用户ID
-    private String userId;
+    private Integer userId;
     //角色ID
-    private String roleId;
+    private Integer roleId;
 
-    private Integer isDeleted;
+    private Integer deleted;
 
     private Date createdTime;
 
     private Date updatedTime;
 
-
-    public SysUserRole(String userId, String roleId) {
-        this.userId = userId;
-        this.roleId = roleId;
-    }
 }

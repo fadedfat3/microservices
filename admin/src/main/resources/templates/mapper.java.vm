@@ -1,0 +1,19 @@
+package ${package.Mapper}import org.springframework.stereotype.Repository;
+
+;
+${package.Entity}
+.${entity};
+    ${superMapperClassPackage}
+        ;
+/**
+ * <p>
+ * $!{table.comment} 数据库访问接口
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Repository
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+
+        }

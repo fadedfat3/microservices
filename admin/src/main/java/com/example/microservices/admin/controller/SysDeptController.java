@@ -1,17 +1,18 @@
 package com.example.microservices.admin.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.microservices.admin.dto.SysDeptDTO;
 import com.example.microservices.admin.entity.SysDept;
 import com.example.microservices.admin.service.SysDeptService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,9 +37,20 @@ public class SysDeptController extends ApiController {
      * @param sysDept 查询实体
      * @return 所有数据
      */
-    @GetMapping
-    public R selectAll(Page<SysDept> page, SysDept sysDept) {
-        return success(this.sysDeptService.page(page, new QueryWrapper<>(sysDept)));
+    @PostMapping
+    public R selectAll(Page<SysDept> page, SysDept sysDept, @RequestParam(required = false) String field, @RequestParam(required = false) Boolean order) {
+        if (field != null) {
+            field = StrUtil.toUnderlineCase(field);
+            List<OrderItem> orderItems = (order == null || order) ? OrderItem.ascs(field) : OrderItem.descs(field);
+            page.setOrders(orderItems);
+        }
+        page.setOptimizeCountSql(false);
+        page.setSearchCount(false);
+        LambdaQueryWrapper<SysDept> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysDept::getParentId, 0);
+        wrapper.like(StrUtil.isNotEmpty(sysDept.getName()), SysDept::getName, sysDept.getName());
+        page.setTotal(sysDeptService.count(wrapper));
+        return success(this.sysDeptService.pageDeptDTO(page, wrapper));
     }
 
     /**
@@ -48,19 +60,15 @@ public class SysDeptController extends ApiController {
      * @return 单条数据
      */
     @GetMapping("{id}")
-    public R selectOne(@PathVariable Serializable id) {
+    public R selectOne(@PathVariable Integer id) {
         return success(this.sysDeptService.getById(id));
     }
 
-    /**
-     * 新增数据
-     *
-     * @param sysDept 实体对象
-     * @return 新增结果
-     */
-    @PostMapping
-    public R insert(@RequestBody SysDept sysDept) {
-        return success(this.sysDeptService.save(sysDept));
+    @GetMapping
+    public R list(SysDept sysDept) {
+        LambdaQueryWrapper<SysDept> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(sysDept.getParentId() != null, SysDept::getParentId, sysDept.getParentId());
+        return success(this.sysDeptService.listDeptDTO(wrapper));
     }
 
     /**
@@ -70,8 +78,8 @@ public class SysDeptController extends ApiController {
      * @return 修改结果
      */
     @PutMapping
-    public R update(@RequestBody SysDept sysDept) {
-        return success(this.sysDeptService.updateById(sysDept));
+    public R save(SysDept sysDept) {
+        return success(this.sysDeptService.saveOrUpdate(sysDept));
     }
 
     /**
@@ -81,27 +89,8 @@ public class SysDeptController extends ApiController {
      * @return 删除结果
      */
     @DeleteMapping
-    public R delete(@RequestParam("idList") List<Long> idList) {
-        return success(this.sysDeptService.removeByIds(idList));
+    public R delete(@RequestParam("ids") Integer[] idList) {
+        return success(this.sysDeptService.removeByIds(Arrays.asList(idList)));
     }
 
-    @GetMapping("/tree")
-    public R tree() {
-        List<SysDept> depts = sysDeptService.list();
-        SysDeptDTO sysDeptDTO = new SysDeptDTO();
-        sysDeptDTO.setDeptId(0);
-        treefy(sysDeptDTO, depts);
-        return success(sysDeptDTO.getChildren());
-    }
-
-    private void treefy(SysDeptDTO sysDeptDTO, List<SysDept> sysDeptList) {
-        sysDeptList.stream().forEach((dept -> {
-            if (dept.getParentId().equals(sysDeptDTO.getDeptId())) {
-                SysDeptDTO child = new SysDeptDTO(dept);
-                sysDeptDTO.getChildren().add(child);
-                treefy(child, sysDeptList);
-            }
-        }));
-        sysDeptDTO.getChildren().sort((o1, o2) -> o1.getSort().compareTo(o2.getSort()));
-    }
 }

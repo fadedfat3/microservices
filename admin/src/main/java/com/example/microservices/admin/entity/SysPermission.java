@@ -1,8 +1,12 @@
 package com.example.microservices.admin.entity;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,67 +15,21 @@ import java.util.Date;
  * @author makejava
  * @since 2020-08-05 16:13:40
  */
-@SuppressWarnings("serial")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SysPermission extends Model<SysPermission> {
 
-    private String id;
+    private Integer id;
     //url正则表达式
     private String url;
-
-    private Object isDeleted;
-
+    @JsonIgnore
+    private Integer deleted;
+    @JsonIgnore
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
-
+    @JsonIgnore
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
 
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Object getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Object isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
-    }
-
-    /**
-     * 获取主键值
-     *
-     * @return 主键值
-     */
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
 }

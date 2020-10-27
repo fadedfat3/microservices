@@ -24,7 +24,9 @@ public interface SysUserService extends IService<SysUser> {
 
     List<SysMenu> findMenuListByUser(SysUser user);
 
-    IPage<SysUserDTO> listUserDTO(IPage<SysUser> page, @Param(Constants.WRAPPER) Wrapper<SysUser> queryWrapper);
+    IPage<SysUserDTO> pageUserDTO(IPage<SysUser> page, @Param(Constants.WRAPPER) Wrapper<SysUser> queryWrapper);
 
     SysUserDTO getUserDTOById(String uid);
+
+    SysUserDTO getUserDTO(Wrapper<SysUser> wrapper);
 }

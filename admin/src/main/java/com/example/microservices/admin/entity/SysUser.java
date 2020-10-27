@@ -1,9 +1,11 @@
 package com.example.microservices.admin.entity;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,7 +23,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class SysUser extends Model<SysUser> {
     //主键ID
-    private String id;
+    private Integer id;
     //用户名
     private String username;
     //密码
@@ -35,16 +37,20 @@ public class SysUser extends Model<SysUser> {
     //头像
     private String avatar;
     //创建时间
+    @JsonIgnore
     private Date createdTime;
     //修改时间
+    @JsonIgnore
     private Date updatedTime;
     //0-正常，1-停用
     private Integer status;
     //0-保密，1-男，2-女
     private Integer sex;
     //上次登陆时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastLoginTime;
-
+    @JsonIgnore
+    private Integer deleted;
 
 
     /**

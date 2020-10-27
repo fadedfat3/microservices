@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.microservices.admin.mapper.GeneratorConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.microservices.admin.entity.GeneratorConfig">
+        <id column="id" property="id"/>
+        <result column="projectPath" property="projectPath"/>
+        <result column="moduleName" property="moduleName"/>
+        <result column="author" property="author"/>
+        <result column="url" property="url"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="packageName" property="packageName"/>
+        <result column="deleted" property="deleted"/>
+        <result column="createdTime" property="createdTime"/>
+        <result column="updatedTime" property="updatedTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, projectPath, moduleName, author, url, username, password, packageName, deleted, createdTime, updatedTime
+    </sql>
+
+</mapper>

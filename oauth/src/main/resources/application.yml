@@ -4,9 +4,13 @@ spring:
   application:
     name: uaa
   cloud:
+    inetutils:
+      ignored-interfaces: eth.*
+      preferred-networks: 134.175.47
     nacos:
       discovery:
         server-addr: 134.175.47.234:8848
+        ip: 134.175.47.234
     sentinel:
       transport:
         dashboard: 134.175.47.234:8180
@@ -20,6 +24,15 @@ spring:
 #    host: 192.168.70.200
 #    port: 6379
 #    password: 123456
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.microservices.oauth.entity
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-delete-field: deleted
+      id-type: auto
 
 
 feign:

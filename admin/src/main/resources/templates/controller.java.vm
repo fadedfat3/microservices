@@ -1,0 +1,117 @@
+package ${package.Controller}import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+;
+${package.Entity}
+        .${entity};
+${package.Service}
+        .${table.serviceName};
+#if(${restControllerStyle})
+#else
+#end
+#if(${superControllerClassPackage})
+    ${superControllerClassPackage}
+        ;
+#end
+#macro(serviceLowerCase $s)
+    #set ($first=$s.substring(0,1).toLowerCase())
+    #set ($left=$s.substring(1))
+    #set ($serviceVar="$first$left")
+#end
+#macro(entityLowerCase $s)
+    #set ($first=$s.substring(0,1).toLowerCase())
+    #set ($left=$s.substring(1))
+    #set ($entityVar="$first$left")
+#end
+#serviceLowerCase(${table.serviceName})
+##entityLowerCase(${table.entityName})
+/**
+ * <p>
+ * $!{table.comment} 控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+@Autowired
+private ${table.serviceName} ${serviceVar};
+/**
+ * 分页查询所有数据
+ *
+ * @param page    分页对象
+ * @param ${table.entityPath} 查询实体
+ * @return 分页数据
+ */
+@PostMapping
+public R selectAll(Page<${entity}> page, ${entity} ${table.entityPath},@RequestParam(required = false) String field,@RequestParam(required = false) Boolean order){
+        if(field!=null){
+        field=StrUtil.toUnderlineCase(field);
+        List<OrderItem> orderItems=(order==null||order)?OrderItem.ascs(field):OrderItem.descs(field);
+        page.setOrders(orderItems);
+        }
+        page.setOptimizeCountSql(false);
+        page.setSearchCount(false);
+        LambdaQueryWrapper<${entity}> wrapper=new LambdaQueryWrapper<>();
+
+        page.setTotal(${serviceVar}.count(wrapper));
+        return success(${serviceVar}.page(page,wrapper));
+        }
+
+/**
+ * 通过主键查询单条数据
+ *
+ * @param id 主键
+ * @return 单条数据
+ */
+@GetMapping("{id}")
+public R selectOne(@PathVariable Integer id){
+        return success(${serviceVar}.getById(id));
+        }
+
+/**
+ * 查询所有数据
+ *
+ * @param ${table.entityPath} 实体对象
+ * @return 所有数据
+ */
+@GetMapping
+public R list(${entity} ${table.entityPath}){
+        LambdaQueryWrapper<${entity}> wrapper=new LambdaQueryWrapper<>();
+        return success(${serviceVar}.list(wrapper));
+        }
+
+/**
+ * 修改数据
+ *
+ * @param ${table.entityPath} 实体对象
+ * @return 修改结果
+ */
+@PutMapping
+public R save(${entity} ${table.entityPath}){
+        return success(${serviceVar}.saveOrUpdate(${table.entityPath}));
+        }
+
+/**
+ * 删除数据
+ *
+ * @param idList 主键集合
+ * @return 删除结果
+ */
+@DeleteMapping
+public R delete(@RequestParam("ids") Integer[]idList){
+        return success(${serviceVar}.removeByIds(Arrays.asList(idList)));
+        }
+
+        }

@@ -1,4 +1,4 @@
-package com.example.microservices.admin.dao;
+package com.example.microservices.admin.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -18,12 +18,14 @@ import java.util.List;
  * @author makejava
  * @since 2020-08-05 15:19:03
  */
-public interface SysUserDao extends BaseMapper<SysUser> {
+public interface SysUserMapper extends BaseMapper<SysUser> {
     List<SysPermission> findPermissionListByUser(SysUser user);
 
     List<SysMenu> findMenuListByUser(SysUser user);
 
-    IPage<SysUserDTO> listUserDTO(IPage<SysUser> page, @Param(Constants.WRAPPER) Wrapper<SysUser> queryWrapper);
+    IPage<SysUserDTO> pageUserDTO(IPage<SysUser> page, @Param(Constants.WRAPPER) Wrapper<SysUser> queryWrapper);
 
     SysUserDTO getUserDTOById(String uid);
+
+    SysUserDTO getUserDTO(@Param(Constants.WRAPPER) Wrapper<SysUser> wrapper);
 }

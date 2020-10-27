@@ -1,4 +1,4 @@
-package com.example.microservices.admin.dao;
+package com.example.microservices.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.microservices.admin.entity.SysDict;
@@ -9,6 +9,6 @@ import com.example.microservices.admin.entity.SysDict;
  * @author makejava
  * @since 2020-08-05 16:14:58
  */
-public interface SysDictDao extends BaseMapper<SysDict> {
+public interface SysDictMapper extends BaseMapper<SysDict> {
 
 }
