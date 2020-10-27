@@ -13,9 +13,9 @@ spring:
         port: 8719
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:134.175.47.234}:${DATASOURCE_PORT:3306}/rbac-security?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:47.110.32.181}:${DATASOURCE_PORT:3306}/microservices-admin?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=GMT%2B8
     username: ${DATASOURCE_USERNAME:root}
-    password: ${DATASOURCE_PASSWORD:Wangu123!@#}
+    password: ${DATASOURCE_PASSWORD:1nncore.co.ltd}
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss

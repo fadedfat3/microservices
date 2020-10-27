@@ -1,4 +1,4 @@
-package com.example.microservices.oauth.dao;
+package com.example.microservices.oauth.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.microservices.oauth.entity.SysPermission;
@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2020-09-22 16:01:06
  */
 @Repository
-public interface SysUserDao extends BaseMapper<SysUser> {
+public interface SysUserMapper extends BaseMapper<SysUser> {
 
     List<SysPermission> findPermissionListByUser(SysUser user);
 }

@@ -10,16 +10,16 @@ spring:
     nacos:
       discovery:
         server-addr: 182.92.5.78:8848
-        ip: 182.92.5.78
+        #ip: 182.92.5.78
     sentinel:
       transport:
         dashboard: 182.92.5.78:8180
         port: 8719
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:134.175.47.234}:${DATASOURCE_PORT:3306}/rbac-security?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=GMT
+    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:47.110.32.181}:${DATASOURCE_PORT:3306}/microservices-admin?characterEncoding=UTF-8&useUnicode=true&useSSL=false&serverTimezone=GMT
     username: ${DATASOURCE_USERNAME:root}
-    password: ${DATASOURCE_PASSWORD:Wangu123!@#}
+    password: ${DATASOURCE_PASSWORD:1nncore.co.ltd}
 #  redis:
 #    host: 192.168.70.200
 #    port: 6379

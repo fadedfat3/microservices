@@ -23,3 +23,49 @@ oauth模块是结合Spring Security和Oauth2实现认证与鉴权。
 用户只需将新建的Spring Boot项目注册到Nacos，使用Feign调用admin模块的通用功能模块。
 admin模块已实现RBAC权限管理，并支持网页操作，通过网页可快速定制用户角色权限关系。
 网页访问地址http://localhost:9092，登陆名/密码：zhangsan/123456
+
+#### POM配置
+POM文件增加如下依赖：
+```<dependency>
+               <groupId>com.alibaba.cloud</groupId>
+               <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+           </dependency>
+           <dependency>
+               <groupId>org.springframework.cloud</groupId>
+               <artifactId>spring-cloud-starter-openfeign</artifactId>
+           </dependency>
+           <dependency>
+               <groupId>com.alibaba.cloud</groupId>
+               <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+           </dependency>
+   
+           <dependency>
+               <groupId>org.springframework.boot</groupId>
+               <artifactId>spring-boot-starter-web</artifactId>
+           </dependency>
+           <dependency>
+               <groupId>mysql</groupId>
+               <artifactId>mysql-connector-java</artifactId>
+               <version>8.0.18</version>
+           </dependency>
+           <dependency>
+               <groupId>com.baomidou</groupId>
+               <artifactId>mybatis-plus-boot-starter</artifactId>
+               <version>3.3.0</version>
+           </dependency>
+```
+启动文件增加注解：
+```
+@SpringBootApplication
+@EnableFeignClients #远程调用其它微服务接口
+@EnableDiscoveryClient #注册服务
+```
+登陆接口调用方法：
+post请求，URL为http://gateway模块的ip:8000/uaa/oauth/token
+请求body参数为：
+client_id:password
+client_secret:wangu123!@#
+username:用户名
+password:密码
+grant_type:password
+

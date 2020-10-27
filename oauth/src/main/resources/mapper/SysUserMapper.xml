@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org//dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.microservices.oauth.dao.SysUserDao">
+<mapper namespace="com.example.microservices.oauth.mapper.SysUserMapper">
 
     <select id="findPermissionListByUser" parameterType="com.example.microservices.oauth.entity.SysUser"
             resultType="com.example.microservices.oauth.entity.SysPermission">
