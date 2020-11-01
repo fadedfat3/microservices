@@ -63,9 +63,10 @@ POM文件增加如下依赖：
 登陆接口调用方法：
 post请求，URL为http://gateway模块的ip:8000/uaa/oauth/token
 请求body参数为：
+```
 client_id:password
 client_secret:wangu123!@#
 username:用户名
 password:密码
 grant_type:password
-
+```
