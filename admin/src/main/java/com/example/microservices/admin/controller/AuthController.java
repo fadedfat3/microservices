@@ -3,19 +3,30 @@ package com.example.microservices.admin.controller;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.example.microservices.admin.entity.SysUser;
+import com.example.microservices.admin.provider.TestService;
 import com.example.microservices.admin.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RefreshScope
 @Slf4j
 @RestController
 public class AuthController extends ApiController {
 
     @Autowired
     private SysUserService userService;
+
+    @Autowired
+    private TestService testService;
+
+    @Value("${spring.cloud.nacos.discovery.ip}")
+    private String ip;
 
     @PostMapping("/register")
     public R register(SysUser user) {
@@ -38,7 +49,7 @@ public class AuthController extends ApiController {
         return R.ok("退出成功");
     }
 
-//    @RequestMapping("auth")
+    //    @RequestMapping("auth")
 //    public R auth(String username) {
 //        SysUser sysUser = new SysUser();
 //        sysUser.setUsername(username);
@@ -86,4 +97,13 @@ public class AuthController extends ApiController {
 //        }
 //        return urls;
 //    }
+    @GetMapping("test")
+    public Object test() {
+        return testService.test();
+    }
+
+    @GetMapping("hello")
+    public Object hello() {
+        return "hello, this's from " + "localhost";
+    }
 }

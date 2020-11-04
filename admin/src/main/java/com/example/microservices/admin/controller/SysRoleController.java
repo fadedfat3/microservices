@@ -70,6 +70,7 @@ public class SysRoleController extends ApiController {
         QueryWrapper<SysRole> wrapper = new QueryWrapper<>(sysRole);
 
         return success(sysRoleService.list(wrapper));
+        //return success("list of role");
     }
 
     /**

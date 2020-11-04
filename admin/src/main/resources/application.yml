@@ -1,12 +1,13 @@
 server:
   port: 8200
 spring:
-  application:
-    name: user-admin
   cloud:
     nacos:
       discovery:
         server-addr: 182.92.5.78:8848
+        enabled: true
+        ip: ${discovery.ip:127.0.0.1}
+        weight: ${discovery.weight:0}
     sentinel:
       transport:
         dashboard: 182.92.5.78:8180
